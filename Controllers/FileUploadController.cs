@@ -11,7 +11,7 @@ using System.Web.Mvc;
 
 namespace BulkUpload.Controllers
 {
-    public class EmployeeController : Controller
+    public class FileUploadController : Controller
     {               
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["POSX_ConnectionString"].ConnectionString);
         OleDbConnection Econ;
@@ -29,7 +29,7 @@ namespace BulkUpload.Controllers
             file.SaveAs(Path.Combine(Server.MapPath("/excelfolder"), filename));
             InsertExceldata(filepath, filename);
 
-            return View("~/Views/Employee/Index.cshtml");
+            return View("~/Views/FileUpload/Index.cshtml");
         }
         private void ExcelConn(string filepath)
         {
@@ -52,16 +52,19 @@ namespace BulkUpload.Controllers
                 Econ.Close();
                 oda.Fill(ds);
 
-                DataTable dt = ds.Tables[0];
+                DataTable dt = ds.Tables[1];
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
-                objbulk.DestinationTableName = "ExcelUpload";
-                objbulk.ColumnMappings.Add("ID", "ID");
-                objbulk.ColumnMappings.Add("Name", "Name");
-                objbulk.ColumnMappings.Add("Position", "Position");
-                objbulk.ColumnMappings.Add("Location", "Location");
-                objbulk.ColumnMappings.Add("Age", "Age");
-                objbulk.ColumnMappings.Add("Salary", "Salary");
+                objbulk.DestinationTableName = "TARGET_ACH_DETAILS";
+                objbulk.ColumnMappings.Add("TARGETID", "TARGETID");
+                objbulk.ColumnMappings.Add("PERIODID", "PERIODID");
+                objbulk.ColumnMappings.Add("AREA_ID", "AREA_ID");
+                objbulk.ColumnMappings.Add("PARTNER_ID", "PARTNER_ID");
+                objbulk.ColumnMappings.Add("TARGET_AMT", "TARGET_AMT");
+                objbulk.ColumnMappings.Add("ACH_AMT", "ACH_AMT");
+                objbulk.ColumnMappings.Add("ACH_PARC", "ACH_PARC");
+                objbulk.ColumnMappings.Add("CREATED_BY", "CREATED_BY");
+                objbulk.ColumnMappings.Add("CREATED_AT", "CREATED_AT");
                 con.Open();
                 objbulk.WriteToServer(dt);
                 con.Close();
