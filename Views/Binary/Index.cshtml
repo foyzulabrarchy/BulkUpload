@@ -1,0 +1,85 @@
+﻿@model BulkUpload.Models.File_Upload
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+
+    @using (Html.BeginForm("Index", "Binary", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+    {<table>
+
+            <tr>
+
+                <td>File Upload:</td>
+
+                <td>
+
+                    <input type="file" id="File_Upload" name="Filepic" />
+
+                    <br />
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>File Name:</td>
+
+                <td>
+
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                    <br />
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td></td>
+
+                <td>
+
+                    <br />
+
+                    <input type="submit" value="Upload" class="btn btn-default" />
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td></td>
+
+                <td>
+
+                    <br />
+
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <td>Uploaded Image:</td>
+
+                <td>
+
+                    <img src="@ViewBag.Image" width="250px" height="200px" alt="Alternate Text" />
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    }
+
+</div>
+

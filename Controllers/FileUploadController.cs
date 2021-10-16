@@ -22,12 +22,19 @@ namespace BulkUpload.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(HttpPostedFileBase file)
+        public ActionResult Index(HttpPostedFileBase files)
         {
-            string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+            Byte[] imgbyte = null;
+            if (files.ContentType== "image/jpeg")
+            {
+              
+            }
+            else { 
+            string filename = Guid.NewGuid() + Path.GetExtension(files.FileName);
             string filepath = "/excelfolder/" + filename;
-            file.SaveAs(Path.Combine(Server.MapPath("/excelfolder"), filename));
+                files.SaveAs(Path.Combine(Server.MapPath("/excelfolder"), filename));
             InsertExceldata(filepath, filename);
+            }
 
             return View("~/Views/FileUpload/Index.cshtml");
         }
@@ -55,7 +62,7 @@ namespace BulkUpload.Controllers
                 DataTable dt = ds.Tables[1];
 
                 SqlBulkCopy objbulk = new SqlBulkCopy(con);
-                objbulk.DestinationTableName = "TARGET_ACH_DETAILS";
+                objbulk.DestinationTableName = "TARGET_ACH_DETAILS_TEST";
                 objbulk.ColumnMappings.Add("TARGETID", "TARGETID");
                 objbulk.ColumnMappings.Add("PERIODID", "PERIODID");
                 objbulk.ColumnMappings.Add("AREA_ID", "AREA_ID");
